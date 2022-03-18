@@ -2,7 +2,7 @@ const optionsLabel = "More options";
 const settingsLabel = "Settings";
 const microphoneLabel = "Select Microphone";
 const microphoneBlocked = "Microphone is blocked";
-const closeLabel = "Close";
+const closeLabel = "Close dialog";
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -23,9 +23,9 @@ function getMicrophone(microphoneName, x) {
 }
 
 function getMicrophoneMenu() {
-    let foo = document.querySelector(`div[data-aria-label='${microphoneLabel}']`);
+    let foo = document.querySelector(`[data-aria-label='${microphoneLabel}']`);
     if (foo) {
-        let bar = foo.querySelector("div[aria-selected='true']");
+        let bar = foo.querySelector("[aria-selected='true']");
         if (bar.innerText != microphoneBlocked) {
             return bar;
         }
@@ -35,9 +35,9 @@ function getMicrophoneMenu() {
 }
 
 function getClose() {
-    let foo = document.querySelector(`div[aria-label='${settingsLabel}']`);
+    let foo = document.querySelector(`[aria-label='${settingsLabel}']`);
     if (foo) {
-        return foo.querySelector(`div[aria-label='${closeLabel}']`);
+        return foo.querySelector(`[aria-label='${closeLabel}']`);
     }
     return null;
 }
