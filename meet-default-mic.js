@@ -16,16 +16,14 @@ function getSettings() {
     return document.evaluate(`//span[text()='${settingsLabel}']`, document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0);
 }
 
-function getMicrophone(microphoneName, x) {
-    // x: there are two instances of the microphone span
-    // the first appears when the device is recognized, the second when the mic menu is opened. It's the second one that needs to be clicked to select it.
-    return document.evaluate(`//span[text()='${microphoneName}']`, document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(x);
+function getMicrophone(microphoneName) {
+    return document.evaluate(`//span[text()='${microphoneName}']`, document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0);
 }
 
 function getMicrophoneMenu() {
     let foo = document.querySelector(`[data-aria-label='${microphoneLabel}']`);
     if (foo) {
-        let bar = foo.querySelector("[aria-selected='true']");
+        let bar = foo.querySelector("[aria-haspopup='listbox']");
         if (bar.innerText != microphoneBlocked) {
             return bar;
         }
@@ -62,7 +60,7 @@ async function setMicrophone(microphoneName) {
     getMicrophoneMenu().click();
 
     // Wait for the desired microphone to be connected
-    while (!getMicrophone(microphoneName, 0)) {
+    while (!getMicrophone(microphoneName)) {
         await sleep(100);
     }
 
@@ -73,10 +71,10 @@ async function setMicrophone(microphoneName) {
     getMicrophoneMenu().click();
 
     // Select microphone
-    while (!getMicrophone(microphoneName, 1)) {
+    while (!getMicrophone(microphoneName)) {
         await sleep(100);
     }
-    getMicrophone(microphoneName, 1).click();
+    getMicrophone(microphoneName).click();
 
     // Close settings pane
     getClose().click();
