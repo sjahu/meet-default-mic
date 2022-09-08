@@ -42,41 +42,45 @@ function getClose() {
 
 async function setMicrophone(microphoneName) {
     // Open options menu
-    while (!getOptions()) {
+    do {
         await sleep(100);
-    }
+    } while (!getOptions());
     getOptions().click();
 
     // Open settings pane
-    while (!getSettings()) {
+    do {
         await sleep(100);
-    }
+    } while (!getSettings());
     getSettings().click();
 
     // Open microphone selector
-    while (!getMicrophoneMenu()) {
+    do {
         await sleep(100);
-    }
+    } while (!getMicrophoneMenu());
     getMicrophoneMenu().click();
 
-    // Wait for the desired microphone to be connected
-    while (!getMicrophone(microphoneName)) {
-        await sleep(100);
-    }
+    await sleep(100);
+    if (!getMicrophone(microphoneName)) {
+        // Wait for the desired microphone to be connected
+        do {
+            await sleep(100);
+        } while (!getMicrophone(microphoneName));
 
-    // Open microphone selector (again)
-    while (!getMicrophoneMenu()) {
-        await sleep(100);
+        // Open microphone selector (again)
+        do {
+            await sleep(100);
+        } while (!getMicrophoneMenu());
+        getMicrophoneMenu().click();
     }
-    getMicrophoneMenu().click();
 
     // Select microphone
-    while (!getMicrophone(microphoneName)) {
+    do {
         await sleep(100);
-    }
+    } while (!getMicrophone(microphoneName));
     getMicrophone(microphoneName).click();
 
     // Close settings pane
+    await sleep(250);
     getClose().click();
 }
 
